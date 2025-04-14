@@ -9,7 +9,174 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      books: {
+        Row: {
+          author: string
+          category: string
+          condition: string
+          created_at: string | null
+          description: string | null
+          id: string
+          photo: string | null
+          pickup_location: string | null
+          price_inr: number
+          seller_id: string | null
+          seller_name: string | null
+          status: string | null
+          title: string
+        }
+        Insert: {
+          author: string
+          category: string
+          condition: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          photo?: string | null
+          pickup_location?: string | null
+          price_inr: number
+          seller_id?: string | null
+          seller_name?: string | null
+          status?: string | null
+          title: string
+        }
+        Update: {
+          author?: string
+          category?: string
+          condition?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          photo?: string | null
+          pickup_location?: string | null
+          price_inr?: number
+          seller_id?: string | null
+          seller_name?: string | null
+          status?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "books_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      static_content: {
+        Row: {
+          id: string
+          key: string
+          value: string
+        }
+        Insert: {
+          id?: string
+          key: string
+          value: string
+        }
+        Update: {
+          id?: string
+          key?: string
+          value?: string
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          book_id: string
+          book_title: string
+          buyer_id: string
+          buyer_name: string
+          created_at: string | null
+          delivery_location: string
+          id: string
+          pickup_location: string
+          price_inr: number
+          seller_id: string
+          seller_name: string
+          status: string | null
+        }
+        Insert: {
+          book_id: string
+          book_title: string
+          buyer_id: string
+          buyer_name: string
+          created_at?: string | null
+          delivery_location: string
+          id?: string
+          pickup_location: string
+          price_inr: number
+          seller_id: string
+          seller_name: string
+          status?: string | null
+        }
+        Update: {
+          book_id?: string
+          book_title?: string
+          buyer_id?: string
+          buyer_name?: string
+          created_at?: string | null
+          delivery_location?: string
+          id?: string
+          pickup_location?: string
+          price_inr?: number
+          seller_id?: string
+          seller_name?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_buyer_id_fkey"
+            columns: ["buyer_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          is_admin: boolean | null
+          location: string | null
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          is_admin?: boolean | null
+          location?: string | null
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          is_admin?: boolean | null
+          location?: string | null
+          name?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
