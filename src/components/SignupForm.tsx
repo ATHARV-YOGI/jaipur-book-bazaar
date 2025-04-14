@@ -7,6 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { UserPlus } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 const SignupForm = () => {
   const [name, setName] = useState('');
@@ -30,10 +32,27 @@ const SignupForm = () => {
     setIsLoading(true);
 
     try {
+      // Register user with Supabase
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name: name
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      // For demo purposes, also allow direct signup through the context
       await signup(email, name, password);
+      
+      toast.success('Account created successfully!');
       navigate('/');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to sign up');
+      toast.error('Sign up failed. Please try again.');
     } finally {
       setIsLoading(false);
     }

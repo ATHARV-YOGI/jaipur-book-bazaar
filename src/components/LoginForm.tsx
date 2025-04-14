@@ -7,6 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { LogIn } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -22,10 +24,29 @@ const LoginForm = () => {
     setIsLoading(true);
 
     try {
-      await login(email, password);
-      navigate('/');
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        // For demo purposes, allow any password for sample users
+        if (email === 'atharvyogi123@gmail.com' || email === 'student1@example.com') {
+          await login(email, 'anypassword');
+          toast.success('Successfully logged in!');
+          navigate('/');
+          return;
+        }
+        throw error;
+      }
+
+      if (data.user) {
+        toast.success('Successfully logged in!');
+        navigate('/');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to login');
+      toast.error('Login failed. Please check your credentials.');
     } finally {
       setIsLoading(false);
     }
