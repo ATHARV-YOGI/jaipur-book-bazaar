@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/componen
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { LogIn } from 'lucide-react';
+import { LogIn, Mail, Lock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -30,13 +30,6 @@ const LoginForm = () => {
       });
 
       if (error) {
-        // For demo purposes, allow any password for sample users
-        if (email === 'atharvyogi123@gmail.com' || email === 'student1@example.com') {
-          await login(email, 'anypassword');
-          toast.success('Successfully logged in!');
-          navigate('/');
-          return;
-        }
         throw error;
       }
 
@@ -68,26 +61,34 @@ const LoginForm = () => {
           
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-            />
+            <div className="flex items-center border rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+              <Mail className="h-4 w-4 mx-3 text-muted-foreground" />
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                required
+                className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+              />
+            </div>
           </div>
           
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-            />
+            <div className="flex items-center border rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+              <Lock className="h-4 w-4 mx-3 text-muted-foreground" />
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                required
+                className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+              />
+            </div>
           </div>
           
           <Button 
@@ -105,13 +106,6 @@ const LoginForm = () => {
             )}
           </Button>
         </form>
-        
-        <div className="mt-4 text-center text-sm text-muted-foreground">
-          <p>Demo users:</p>
-          <p>Admin: atharvyogi123@gmail.com</p>
-          <p>Student: student1@example.com</p>
-          <p>(any password will work)</p>
-        </div>
       </CardContent>
       
       <CardFooter className="flex justify-center">

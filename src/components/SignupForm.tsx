@@ -6,13 +6,15 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/componen
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { UserPlus } from 'lucide-react';
+import { UserPlus, Mail, User, Phone, MapPin } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 const SignupForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [location, setLocation] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +40,9 @@ const SignupForm = () => {
         password,
         options: {
           data: {
-            name: name
+            name: name,
+            phone: phone,
+            location: location || 'Jaipur'
           }
         }
       });
@@ -46,7 +50,7 @@ const SignupForm = () => {
       if (error) throw error;
 
       // For demo purposes, also allow direct signup through the context
-      await signup(email, name, password);
+      await signup(email, name, password, false, phone, location || 'Jaipur');
       
       toast.success('Account created successfully!');
       navigate('/');
@@ -74,26 +78,65 @@ const SignupForm = () => {
           
           <div className="space-y-2">
             <Label htmlFor="name">Full Name</Label>
-            <Input
-              id="name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your full name"
-              required
-            />
+            <div className="flex items-center border rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+              <User className="h-4 w-4 mx-3 text-muted-foreground" />
+              <Input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter your full name"
+                required
+                className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+              />
+            </div>
           </div>
           
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-            />
+            <div className="flex items-center border rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+              <Mail className="h-4 w-4 mx-3 text-muted-foreground" />
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                required
+                className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+              />
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="phone">Phone Number</Label>
+            <div className="flex items-center border rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+              <Phone className="h-4 w-4 mx-3 text-muted-foreground" />
+              <Input
+                id="phone"
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Enter your phone number"
+                required
+                className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+              />
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="location">Location</Label>
+            <div className="flex items-center border rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+              <MapPin className="h-4 w-4 mx-3 text-muted-foreground" />
+              <Input
+                id="location"
+                type="text"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="Enter your location (default: Jaipur)"
+                className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+              />
+            </div>
           </div>
           
           <div className="space-y-2">

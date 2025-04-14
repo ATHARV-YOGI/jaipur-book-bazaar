@@ -9,7 +9,7 @@ interface AuthContextType {
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  signup: (email: string, name: string, password: string, isAdmin?: boolean) => Promise<void>;
+  signup: (email: string, name: string, password: string, isAdmin?: boolean, phone?: string, location?: string) => Promise<void>;
   updateUserLocation: (location: string) => void;
 }
 
@@ -71,7 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
-  const signup = async (email: string, name: string, password: string, isAdmin = false) => {
+  const signup = async (email: string, name: string, password: string, isAdmin = false, phone = '', location = 'Jaipur') => {
     setLoading(true);
     try {
       // Simulate API call delay
@@ -89,7 +89,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         id: (mockUsers.length + 1).toString(),
         email,
         name,
-        isAdmin
+        isAdmin,
+        location,
+        phone
       };
       
       // In a real app, we would add the user to the database here

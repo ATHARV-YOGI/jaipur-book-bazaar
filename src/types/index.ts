@@ -1,5 +1,4 @@
 
-
 export type BookCategory = 'Drafter' | 'NK' | 'Both';
 
 export type BookCondition = 'New' | 'Like New' | 'Good' | 'Fair' | 'Poor';
@@ -10,6 +9,7 @@ export type User = {
   name: string;
   isAdmin: boolean;
   location?: string;
+  phone?: string;
 };
 
 export type Book = {
@@ -58,4 +58,3 @@ export type SiteContent = {
     message: string;
   };
 };
-
