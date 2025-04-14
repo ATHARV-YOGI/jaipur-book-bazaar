@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,22 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Custom colors for bookstore
+				bookBeige: {
+					DEFAULT: '#F5F1E9',
+					light: '#FAF7F2',
+					dark: '#E8DDCB',
+				},
+				bookBrown: {
+					DEFAULT: '#9E8C6C',
+					light: '#BDAB8B',
+					dark: '#7D6B46',
+				},
+				bookAccent: {
+					DEFAULT: '#D35400',
+					light: '#E67E22',
+					dark: '#A04000',
 				}
 			},
 			borderRadius: {
@@ -84,11 +101,25 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'delivery-van': {
+					'0%': { transform: 'translateX(-100%)' },
+					'100%': { transform: 'translateX(100%)' }
+				},
+				'book-bounce': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-10px)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'delivery-van': 'delivery-van 3s linear infinite',
+				'book-bounce': 'book-bounce 2s ease-in-out infinite'
+			},
+			fontFamily: {
+				'playfair': ['"Playfair Display"', 'serif'],
+				'merriweather': ['Merriweather', 'serif']
 			}
 		}
 	},
