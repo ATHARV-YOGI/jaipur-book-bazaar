@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -33,7 +32,7 @@ import { toast } from 'sonner';
 const Profile = () => {
   const { currentUser, logout, updateUserLocation } = useAuth();
   const navigate = useNavigate();
-  const { allBooks } = useBooks();
+  const { books } = useBooks(); // Changed from 'allBooks' to 'books' to match the context
   const [isEditingLocation, setIsEditingLocation] = useState(false);
   const [userBooks, setUserBooks] = useState<Book[]>([]);
   
@@ -44,11 +43,11 @@ const Profile = () => {
     }
     
     // Filter books belonging to the current user
-    if (currentUser && allBooks) {
-      const filteredBooks = allBooks.filter(book => book.sellerId === currentUser.id);
+    if (currentUser && books) {
+      const filteredBooks = books.filter(book => book.sellerId === currentUser.id);
       setUserBooks(filteredBooks);
     }
-  }, [currentUser, navigate, allBooks]);
+  }, [currentUser, navigate, books]);
 
   const handleLocationUpdate = (location: string) => {
     if (currentUser) {
@@ -87,12 +86,12 @@ const Profile = () => {
             <CardContent className="space-y-6">
               <div className="flex flex-col items-center">
                 <Avatar className="h-24 w-24 mb-4">
-                  <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${currentUser.name}`} alt={currentUser.name} />
-                  <AvatarFallback>{getInitials(currentUser.name)}</AvatarFallback>
+                  <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${currentUser?.name}`} alt={currentUser?.name} />
+                  <AvatarFallback>{currentUser ? getInitials(currentUser.name) : 'U'}</AvatarFallback>
                 </Avatar>
                 
-                <h2 className="text-xl font-bold mb-1">{currentUser.name}</h2>
-                {currentUser.isAdmin && (
+                <h2 className="text-xl font-bold mb-1">{currentUser?.name}</h2>
+                {currentUser?.isAdmin && (
                   <span className="bg-bookAccent text-white text-xs px-2 py-1 rounded-full">
                     Admin
                   </span>
@@ -104,12 +103,12 @@ const Profile = () => {
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
                   <Mail className="h-4 w-4 text-bookBrown" />
-                  <span className="text-sm">{currentUser.email}</span>
+                  <span className="text-sm">{currentUser?.email}</span>
                 </div>
                 
                 <div className="flex items-center gap-2">
                   <Phone className="h-4 w-4 text-bookBrown" />
-                  <span className="text-sm">{currentUser.phone || 'Not provided'}</span>
+                  <span className="text-sm">{currentUser?.phone || 'Not provided'}</span>
                 </div>
                 
                 <div className="flex items-start gap-2">
@@ -118,12 +117,12 @@ const Profile = () => {
                     <div className="flex-1">
                       <LocationInput 
                         onLocationSet={handleLocationUpdate} 
-                        initialLocation={currentUser.location}
+                        initialLocation={currentUser?.location}
                       />
                     </div>
                   ) : (
                     <div className="flex flex-1 justify-between items-center">
-                      <span className="text-sm">{currentUser.location || 'Not provided'}</span>
+                      <span className="text-sm">{currentUser?.location || 'Not provided'}</span>
                       <Button 
                         variant="ghost" 
                         size="sm" 
@@ -257,6 +256,16 @@ const Profile = () => {
       <Footer />
     </div>
   );
+};
+
+// Add the missing getInitials function
+const getInitials = (name: string) => {
+  return name
+    .split(' ')
+    .map(part => part[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
 };
 
 export default Profile;
