@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { 
   Menu, 
@@ -10,16 +10,40 @@ import {
   UserPlus, 
   ShoppingBag, 
   BookMarked, 
-  ShieldCheck 
+  ShieldCheck,
+  User
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
 
 const Header = () => {
   const { currentUser, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(part => part[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
   };
 
   return (
@@ -51,8 +75,28 @@ const Header = () => {
             
             {currentUser ? (
               <div className="flex items-center space-x-4">
-                <span className="text-bookBrown-dark">Hi, {currentUser.name.split(' ')[0]}</span>
-                <Button variant="outline" onClick={logout}>Logout</Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="flex items-center gap-2 p-1">
+                      <Avatar className="h-8 w-8">
+                        <AvatarFallback className="bg-bookBeige text-bookBrown-dark">
+                          {getInitials(currentUser.name)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="text-bookBrown-dark">{currentUser.name.split(' ')[0]}</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => navigate('/profile')}>
+                      <User className="mr-2 h-4 w-4" />
+                      My Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout}>
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             ) : (
               <div className="flex items-center space-x-4">
@@ -142,14 +186,24 @@ const Header = () => {
               )}
               {currentUser ? (
                 <>
-                  <li className="px-3 py-2 text-bookBrown-dark">
-                    Hi, {currentUser.name.split(' ')[0]}
+                  <li>
+                    <Link 
+                      to="/profile" 
+                      className="block px-3 py-2 text-bookBrown-dark hover:bg-bookBeige rounded-md"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <div className="flex items-center">
+                        <User className="w-5 h-5 mr-2" />
+                        My Profile
+                      </div>
+                    </Link>
                   </li>
                   <li>
                     <button 
                       onClick={() => {
                         logout();
                         setIsMenuOpen(false);
+                        navigate('/');
                       }}
                       className="w-full text-left px-3 py-2 text-bookBrown-dark hover:bg-bookBeige rounded-md"
                     >

@@ -1,4 +1,3 @@
-
 export type BookCategory = 'Drafter' | 'NK' | 'Both';
 
 export type BookCondition = 'New' | 'Like New' | 'Good' | 'Fair' | 'Poor';
@@ -10,6 +9,9 @@ export type User = {
   isAdmin: boolean;
   location?: string;
   phone?: string;
+  booksListed?: number;
+  booksSold?: number;
+  booksBought?: number;
 };
 
 export type Book = {
