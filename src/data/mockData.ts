@@ -155,7 +155,7 @@ export const mockSales: Sale[] = [
 ];
 
 export const mockSiteContent: SiteContent = {
-  about: 'Old Books Market: Jaipur students buy/sell Drafter/NK books, 24-hour delivery/pickup. By Atharv Yogi, Yogesh Sharma, Vivek Sharma.',
+  about: 'Old Books Market: Jaipur students buy/sell Drafter/NK books, 24-hour delivery/pickup.',
   contact: {
     atharv: {
       phone: '+918209934606',
