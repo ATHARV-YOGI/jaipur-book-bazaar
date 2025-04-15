@@ -65,6 +65,50 @@ export type Database = {
           },
         ]
       }
+      orders: {
+        Row: {
+          book_id: string | null
+          created_at: string
+          id: string
+          quantity: number
+          shipping_address: string
+          status: string
+          total_price: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          book_id?: string | null
+          created_at?: string
+          id?: string
+          quantity?: number
+          shipping_address: string
+          status?: string
+          total_price: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          book_id?: string | null
+          created_at?: string
+          id?: string
+          quantity?: number
+          shipping_address?: string
+          status?: string
+          total_price?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       static_content: {
         Row: {
           id: string
@@ -158,6 +202,7 @@ export type Database = {
           is_admin: boolean | null
           location: string | null
           name: string
+          phone: string | null
         }
         Insert: {
           created_at?: string | null
@@ -166,6 +211,7 @@ export type Database = {
           is_admin?: boolean | null
           location?: string | null
           name: string
+          phone?: string | null
         }
         Update: {
           created_at?: string | null
@@ -174,6 +220,7 @@ export type Database = {
           is_admin?: boolean | null
           location?: string | null
           name?: string
+          phone?: string | null
         }
         Relationships: []
       }

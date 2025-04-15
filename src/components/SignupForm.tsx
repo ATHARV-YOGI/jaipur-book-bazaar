@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -9,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { UserPlus, Mail, User, Phone, MapPin } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const SignupForm = () => {
   const [name, setName] = useState('');
@@ -19,7 +19,6 @@ const SignupForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const { signup } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -34,26 +33,23 @@ const SignupForm = () => {
     setIsLoading(true);
 
     try {
-      // Register user with Supabase
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
-            name: name,
-            phone: phone,
+            name,
+            phone,
             location: location || 'Jaipur'
-          }
+          },
+          emailRedirectTo: `${window.location.origin}/login`
         }
       });
 
       if (error) throw error;
 
-      // For demo purposes, also allow direct signup through the context
-      await signup(email, name, password, false, phone, location || 'Jaipur');
-      
-      toast.success('Account created successfully!');
-      navigate('/');
+      toast.success('Sign up successful! Please check your email to verify your account.');
+      navigate('/login');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to sign up');
       toast.error('Sign up failed. Please try again.');
